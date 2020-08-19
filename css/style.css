@@ -8,14 +8,18 @@ html {
      height: 100%;
      margin: 0;
      padding: 0;
-     background-color:#f1f2ff;
+     background-color:  #ffdfdf;
  }
  
  .container {
-     margin: 6% auto;
-     font-family:"Didot", "Georgia", "Verdana";
+     margin: 7% auto;
+     font-family:"Georgia", "Verdana";
+     background: linear-gradient(45deg, #d8dcff, #b0b8ff);
  }
 
+ h4 {
+    font-family: "Didot";
+ }
  
  .img-fluid {
    max-width: auto;
@@ -28,7 +32,8 @@ html {
  }
  
  p {
-     font-size: 14px
+     font-size: 15px;
+     font-family: "Georgia", "Verdana", "serif";
  }
  
  ul {
@@ -38,6 +43,7 @@ html {
  
  h1 {
      padding-bottom: 6px;
+     font-family : "Didot"
  }
  
  h5 {
