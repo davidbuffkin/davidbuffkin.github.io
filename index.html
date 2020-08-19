@@ -8,37 +8,120 @@
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/style.css" rel="stylesheet">
     </head>
-    <body>
+    <body class="pb-5">
 
-        <div class="container">
+        <div class="container rounded">
 
-            <div class="row">
+            <div class="row p-5 rounded">
 
-                <div class="col-2">
-                    2
+                <div class="col-sm-1">
+                    
                 </div>
 
-                <div class="col-6">
-                    <div class="purple-gradient color-block">
-                        <h1>Hey! I'm David.</h1>
+                <div class="col-sm-6 ">
+                    
+                    <h1 style="font-family:Didot">Hey! I'm David.</h1>
+                    <p>I study at Carnegie Mellon in pursuit of 
+                        my bachelor's in Artificial Intelligence.
+                    </p>
+                    <p>
+                        To see some of my projects, take a scroll down.
+                    </p>
+                    
+                    
+                </div>
+
+                <div class="col-sm-3">
+                    Image of me
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="container pb-5 rounded">
+            <div class="row pt-5 pb-2 "><div class="col-sm d-flex justify-content-center"><h1>Greenhouse Simulator</h1></div></div>
+            <hr class="dashed">
+            <div class="row py-5 px-5 rounded">
+                <div class="col-sm-4">
+                    <img src= "terrarium/frontview.png" class="img-fluid rounded">
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="embed-responsive embed-responsive-4by3">
+                        <video class="video-fluid rounded" autoplay loop muted>
+                            <source src="terrarium/plantgrow.mov"/>
+                        </video>
                     </div>
                 </div>
 
-                <div class="col-3">
-                    3
+                <div class="col-sm-4">
+                    <img src= "terrarium/plantview.png" class="img-fluid rounded">
                 </div>
+            </div>
 
+            <div class="row py-3">
+                <div class="col-sm d-flex justify-content-center">
+                    <h4 style="font-family: Georgia">
+                        What you're seeing is a realistic, fully-interactive simulation of a plant terrarium. 
+                    </h4>
+                </div>
+            </div>
+            <hr class="dashed">
+            <div class="row pt-5 pb-4">
+                <div class="col-sm-2"></div>
+                <div class="col-sm"><h4>Features</h4></div>
+            </div>
+            <div class="row pb-3">
+                <div class="col-sm-1"></div>
+                <div class="col-sm mr-5">
+                    <p>
+                        The simulation program is designed to be integrated into a ROS network 
+                        where an autonomous agent can control various aspects of the simulation
+                        (the actuators are a water pump, fans, and light) based on information
+                        it recieves (the sensors are temperature, humidity, soil moisture, etc.). In this way,
+                        it is meant to be used to test the autonomous growth of plants.
+                        The simulation of the environment is robust and responsive, taking into account
+                        the time of day for sunlight, modelling real-world hydrologic interactions, 
+                        growing the plants realistically based on the simulated environment, and much more.
+                    </p>
+                </div>
+            </div>
+            <div class="row pt-3 pb-4">
+                <div class="col-sm-2"></div>
+                <div class="col-sm"><h4>My Work</h4></div>
+            </div>
+            <div class="row pb-5">
+                <div class="col-sm-1"></div>
+                <div class="col-sm mr-5">
+                    <p>
+                        Everything you see I wrote or created. I created the 3D models for the terrarium its parts in Blender,
+                        I wrote the python necessary to render them, I linked the interaction of the program to ROS and other agents, and
+                        I modelled the mathematics necessary to make the plants grow realistically - both the geometry involved in shaping
+                         the plants, and the interaction with environmental factors to adjust plant growth.
+
+                    </p>
+                </div>
             </div>
 
         </div>
         
+        <div class="container" style="background: rgba(255, 255, 255, 0);">
+            <div class="row pb-5">
+                <div class="col-sm d-flex justify-content-center">
+                    bottom text
+                </div>
+            </div>
+        </div>
 
         
 
+        <!-- misc: bubble diver, spectral paper, this website, -->
 
         <script src="js/jquery-3.5.1.slim.min.js"></script>
         <script src="https://unpkg.com/@popperjs/core@2"></script>
         <script src="js/bootstrap.min.js"></script>
+
 
     </body>
 </html>
