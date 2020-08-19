@@ -30,6 +30,9 @@ html {
      padding-bottom: 216.42%;
  }
  
+ .link { color: #0003d1; } /* CSS link color (red) */
+ .link:hover { color: #7e61ff; } /* CSS link hover (green) */
+
  img {
      margin: auto;
      display: block;
