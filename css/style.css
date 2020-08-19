@@ -25,6 +25,10 @@ html {
    max-width: auto;
    height: auto;
  }
+
+ .embed-responsive-1242by2688 {
+     padding-bottom: 216.42%;
+ }
  
  img {
      margin: auto;
