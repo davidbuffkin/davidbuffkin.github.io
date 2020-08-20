@@ -5,7 +5,7 @@ var whiteSquareGrey = '#a9a9a9'
 var blackSquareGrey = '#696969'
 var pr = ""
 var mins = 0;
-var searchDepth = 0
+var searchDepth = 1
 
 function maxMoveValue(depth){
   mins += 1
@@ -22,10 +22,10 @@ function maxMoveValue(depth){
   for (var i = 0; i < moves.length; i++){
     var m = moves[i]
     dummy.move(m)
-    var val = minMoveValue(depth - 1)[1]
+    var val = minMoveValue(depth - 1)[1] + Math.random() * .1
     //pr += "[" + m.toString() + ", " + val + "]" 
     dummy.undo()
-    if (val > max[1] || (val == max[1] && Math.random() < .2)){
+    if (val > max[1]){
       max = [m, val]
     }
   }
@@ -56,11 +56,11 @@ function minMoveValue(depth){
     //pr += "Considering move " + m.toString() +" to FEN "
     dummy.move(m)
     //pr += dummy.fen() + " :: ("
-    var val = maxMoveValue(depth - 1)[1]
+    var val = maxMoveValue(depth - 1)[1] + Math.random() * .1
     dummy.undo()
     //pr += ") found value " + val
     //pr += "val of " + m.toString() + ": " + val + "; "
-    if (val < min[1] || (val == min[1] && Math.random() < .2)){
+    if (val < min[1]){
       min = [m, val]
       //pr += "value of " + min.toString() + "is better. Switching."
     }
@@ -70,19 +70,110 @@ function minMoveValue(depth){
   return min
 }
 
-function bestMoveValue(black, depth){
+function bestMoveValue(black, depth, alpha, beta){
+
+  if (depth == 0)
+    return [null, evaluation()]
+  if (dummy.in_checkmate())
+    return 1001 * (1 ? black : -1)
+  
+  var best = [null, 1005 * (1 ? black : -1)]
+  var moves = dummy.moves()
+  for (var i = 0; i < moves.length; i++){
+    dummy.move(moves[i])
+    var val = -bestMoveValue(!black, depth-1, -beta, -alpha)[1]
+    dummy.undo()
+
+    if(val < best[1])
+      best = [moves[i], val]
+    if(best[1] < beta)
+      beta = best[1]
+    if(alpha >= beta)
+      return best
+  }
+  return best
+
+
+
   if(black)
     return minMoveValue(depth)
   else
     return maxMoveValue(depth)
   
 }
+/*
+initially alpha = -INFINITY, beta=INFINITY
+
+search(position,side,depth,alpha,beta) {
+
+  best_score = -INFINITY
+  
+  for each move {
+
+    do_move(position, move)
+      
+      if ( depth is 0 )   move_score = static_score(position, side)
+      else   move_score = - search(position, opponent side, depth-1, -beta, -alpha)
+      
+    undo_move(position,move)
+    
+    if ( move_score > best_score )   best_score = move_score
+    if ( best_score > alpha )   alpha = best_score
+    if ( alpha >= beta )   return alpha
+  }
+  
+  return best_score
+  
+}*/
+
+function score(black, depth, alpha, beta){
+  var best = -2000
+  var moves = dummy.moves()
+  
+  for (var i = 0; i < moves.length; i++){
+    dummy.move(moves[i])
+    var moveScore
+    if (depth == 0)
+      moveScore = evaluation(black)
+    else
+      moveScore = -score(!black, depth - 1, -beta, -alpha)
+    dummy.undo()
+    if (moveScore > best)
+      best = moveScore
+    if (best > alpha)
+      alpha = best
+    if (alpha >= beta)
+      return alpha
+  }
+  return best
+}
 
 function getEngineMove (){
-  pr = ""
+  //pr  = ""
   dummy.load(game.fen())
-  move = bestMoveValue(game.turn() == "b", searchDepth)[0]
-  return move
+  var best = [null, -10000]
+  var moves = dummy.moves()
+
+  //Reorder for better pruning
+/*
+  moves = moves.map(a => [-score(true, 1, -10000, 10000), a])
+
+  moves.sort((a, b) => a[0] < b[0])
+  moves = moves.map(a => a[1])
+*/
+  var lower = -100000
+  for (var i = 0; i < moves.length; i++){
+    //pr += "[Trying " + moves[i].toString()
+    dummy.move(moves[i])
+    var moveScore = -score(true, 2, lower, 100000) + Math.random() * .00001
+    dummy.undo()
+    //pr += ", found score " + moveScore + "]"
+    if (moveScore > best[1])
+      best = [moves[i], moveScore]
+    if(best[0] > lower)
+      lower = best[0]
+  }
+  return best[0]
   if (move != null)
     return move
   var moves = game.moves()
@@ -104,14 +195,26 @@ function pieceValue(p){
   return 0
 }
 
-function evaluation() {
+function l1(){
+  depthClick(1)
+}
+function l2(){
+  depthClick(2)
+}
+
+function depthClick(d){
+  searchDepth = d + 1
+  document.getElementById("lvlText").textContent = "Level " + d
+}
+
+function evaluation(black) {
     var fen = dummy.fen()
     var sum = 0;
     var l = fen.indexOf(" ");
     for (var i = 0; i < l; i++)
       sum += pieceValue(fen[i]);
       //document.getElementById('txtField').textContent=fen +" eval:" + sum;
-    return sum
+    return sum * (-1 ? black : 1)
 } 
 
 function removeGreySquares () {
@@ -157,7 +260,6 @@ async function onDrop (source, target) {
   updateText()
 
   //document.getElementById('txtField').textContent=game.fen()
-  searchDepth = 3
   await new Promise(r => setTimeout(r, 300));
   var move = getEngineMove()
   //await new Promise(r => setTimeout(r, 500));
@@ -166,6 +268,7 @@ async function onDrop (source, target) {
   board.position(game.fen(), false);
   //dummy.load(game.fen())
   s += " " + move.toString() + " "
+  //s = pr
   updateText()
   //evaluation(game.fen());
   if(game.game_over())
@@ -213,4 +316,6 @@ var config = {
 }
 board = Chessboard('myBoard', config)
 $(window).resize(board.resize)
+document.getElementById("lev1").onclick = function() {depthClick(1); document.getElementById("lvlText").textContent += " (Takes a second)"}
+document.getElementById("lev2").onclick = function() {depthClick(2); document.getElementById("lvlText").textContent += " (Takes a minute)"}
 //var id = setInterval(updateText, 100)
