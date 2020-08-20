@@ -14,7 +14,7 @@ html {
  .container {
      margin: 7% auto;
      font-family:"Georgia", "Verdana";
-     background: linear-gradient(to bottom right, #d8dcff, #7a87ff);
+     background: linear-gradient(to bottom left, #d8dcff, #99a3ff);
  }
 
  h4 {
@@ -30,8 +30,11 @@ html {
      padding-bottom: 216.42%;
  }
  
- .link { color: #0003d1; } /* CSS link color (red) */
- .link:hover { color: #7e61ff; } /* CSS link hover (green) */
+ .link { 
+    color: #5d4bff; 
+    font-family: "Verdana";
+} /* CSS link color (red) */
+ .link:hover { color: #a10000; } /* CSS link hover (green) */
 
  img {
      margin: auto;
@@ -39,7 +42,7 @@ html {
  }
  
  p {
-     font-size: 15px;
+     font-size: 16px;
      font-family: "Georgia", "Verdana", "serif";
  }
  
@@ -66,7 +69,7 @@ html {
      text-align: left;
      display: inline-block;
      font-family:"Didot", "Georgia", "Verdana", "serif";
-     font-size: 17px;
+     font-size: 14px;
  }
  
  a {
